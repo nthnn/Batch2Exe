@@ -1,3 +1,7 @@
+<p align="center">
+	<img src="./logos/batch2exe-logo.png" width="200" />
+</p>
+
 # Batch2Exe: Convert Batch File Into Windows Executable
 
 Batch2Exe is a program for converting batch files to executable files on Windows. It has a user-friendly interface for inputting information and uses advanced compression and obfuscation techniques for security. This paper describes its technical aspects and features, making it a valuable tool for system administrators and developers.
