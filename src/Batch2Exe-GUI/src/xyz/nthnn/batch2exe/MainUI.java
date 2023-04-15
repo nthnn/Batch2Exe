@@ -17,7 +17,7 @@ public class MainUI implements Runnable {
     @Override
     public void run() {
         this.mainFrame = new JFrame("Batch2Exe");
-        this.mainFrame.setSize(new Dimension(300, 300));
+        this.mainFrame.setSize(new Dimension(420, 510));
         this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.mainFrame.setLocationRelativeTo(null);
 
