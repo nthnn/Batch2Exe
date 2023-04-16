@@ -8,7 +8,8 @@ Batch2Exe is a program for converting batch files to executable files on Windows
 
 ## Developers
 
-Leader: Isip, Nathanne
+Leader:
+- Isip, Nathanne
 
 Members:
 - Dela Pena, Jefford
