@@ -2,6 +2,7 @@ package xyz.nthnn.batch2exe;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.IntelliJTheme;
+import xyz.nthnn.batch2exe.io.ResourceLoader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -31,11 +32,7 @@ public class MainUI implements Runnable {
         this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.mainFrame.setLocationRelativeTo(null);
         this.mainFrame.setJMenuBar(menuBar);
-
-        try {
-            this.mainFrame.setIconImage(ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("res/batch2exe-logo.png")));
-        }
-        catch(IOException ex) { }
+        this.mainFrame.setIconImage(ResourceLoader.getImageResource("res/batch2exe-logo.ico"));
 
         JMenuItem aboutDevelopers = new JMenuItem("Developers");
         aboutDevelopers.addActionListener(new ActionListener() {
