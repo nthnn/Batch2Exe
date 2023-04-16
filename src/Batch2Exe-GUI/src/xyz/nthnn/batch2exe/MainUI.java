@@ -4,12 +4,10 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.IntelliJTheme;
 import xyz.nthnn.batch2exe.io.ResourceLoader;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 public class MainUI implements Runnable {
     private JFrame mainFrame;

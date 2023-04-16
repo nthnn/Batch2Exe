@@ -31,9 +31,15 @@ public class ConfigIO {
         obj.put("Title", info.title);
         obj.put("FileName", info.fileName);
         obj.put("Output", info.output);
-        obj.put("Icon", info.icon);
-        obj.put("DefaultWorkingDirectory", info.workingDirectory);
-        obj.put("Arguments", info.arguments);
+
+        if(info.icon != null)
+            obj.put("Icon", info.icon);
+
+        if(info.workingDirectory != null)
+            obj.put("DefaultWorkingDirectory", info.workingDirectory);
+
+        if(info.arguments != null)
+            obj.put("Arguments", info.arguments);
 
         Files.write(Paths.get(fileName), obj.toJSONString().getBytes());
     }
