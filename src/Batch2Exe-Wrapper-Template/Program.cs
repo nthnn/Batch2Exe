@@ -5,7 +5,7 @@ public class Batch2ExeWrapperTemplate {
     private static string Arguments = null;
     private static string DefaultWorkingDirectory = null;
     private static string Script = "echo \"Hello, world\";";
-    private static string FileName = "hello.bat";
+    private static string FileName = "-hello.bat";
 
     public static void Main(string[] Args) {
         File.WriteAllText(FileName, "@echo off\r\ntitle " + Title + "\r\n" + Script);
@@ -18,6 +18,7 @@ public class Batch2ExeWrapperTemplate {
         if(DefaultWorkingDirectory != null)
             proc.StartInfo.WorkingDirectory = DefaultWorkingDirectory;
 
+		proc.StartInfo.CreateNoWindow = true;
         proc.Start();
         File.SetAttributes(FileName, File.GetAttributes(FileName) | FileAttributes.Hidden);
 

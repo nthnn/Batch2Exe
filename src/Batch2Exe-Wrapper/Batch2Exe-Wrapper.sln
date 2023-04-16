@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Batch2Exe-Wrapper", "Batch2Exe-Wrapper.csproj", "{F6ECA4A9-6AF4-4575-8F3C-01CD7C9757DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F6ECA4A9-6AF4-4575-8F3C-01CD7C9757DC}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{F6ECA4A9-6AF4-4575-8F3C-01CD7C9757DC}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{F6ECA4A9-6AF4-4575-8F3C-01CD7C9757DC}.Debug|x64.ActiveCfg = Debug|x64
+		{F6ECA4A9-6AF4-4575-8F3C-01CD7C9757DC}.Debug|x64.Build.0 = Debug|x64
+		{F6ECA4A9-6AF4-4575-8F3C-01CD7C9757DC}.Debug|x86.ActiveCfg = Debug|x86
+		{F6ECA4A9-6AF4-4575-8F3C-01CD7C9757DC}.Debug|x86.Build.0 = Debug|x86
+		{F6ECA4A9-6AF4-4575-8F3C-01CD7C9757DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6ECA4A9-6AF4-4575-8F3C-01CD7C9757DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6ECA4A9-6AF4-4575-8F3C-01CD7C9757DC}.Release|x64.ActiveCfg = Release|x64
+		{F6ECA4A9-6AF4-4575-8F3C-01CD7C9757DC}.Release|x64.Build.0 = Release|x64
+		{F6ECA4A9-6AF4-4575-8F3C-01CD7C9757DC}.Release|x86.ActiveCfg = Release|Any CPU
+		{F6ECA4A9-6AF4-4575-8F3C-01CD7C9757DC}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {68AF999C-7EF8-4222-9D82-14FD247DBC18}
+	EndGlobalSection
+EndGlobal
