@@ -9,6 +9,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class MainUI implements Runnable {
     private JFrame mainFrame;
@@ -31,16 +34,29 @@ public class MainUI implements Runnable {
         this.mainFrame.setJMenuBar(menuBar);
         this.mainFrame.setResizable(false);
 
-        JLabel logoView = new JLabel(new ImageIcon(ResourceLoader.getImageResource("res/batch2exe-logo.png").getScaledInstance(100, 100, Image.SCALE_REPLICATE)));
-        logoView.setBorder(BorderFactory.createEmptyBorder(0, 0, 12, 0));
-
         JPanel panel0 = new JPanel();
-        panel0.add(logoView, Component.CENTER_ALIGNMENT);
+        panel0.add(new JLabel(new ImageIcon(ResourceLoader.getImageResource("res/batch2exe-logo.png").getScaledInstance(100, 100, Image.SCALE_REPLICATE))));
+
+        JLabel titleView = new JLabel("Batch-2-Exe");
+        titleView.setFont(ResourceLoader.getFontResource("res/venus-rising.otf").deriveFont(Font.BOLD, 24));
+        titleView.setBorder(BorderFactory.createEmptyBorder(0, 0, 12, 0));
+
+        JPanel text0 = new JPanel();
+        text0.add(titleView);
+
+        JLabel text1Label = new JLabel("File I/O");
+        text1Label.setFont(text1Label.getFont().deriveFont(Font.BOLD, text1Label.getFont().getSize() + 2));
+
+        JPanel text1 = new JPanel();
+        text1.setBorder(BorderFactory.createEmptyBorder(14, 0, 0, 0));
+        text1.add(text1Label);
 
         JTextArea fileNameTextArea = new JTextArea();
-        fileNameTextArea.setPreferredSize(new Dimension(300, (int) fileNameTextArea.getPreferredSize().getHeight()));
+        fileNameTextArea.setToolTipText("Input batch file name.");
+        fileNameTextArea.setPreferredSize(new Dimension(290, (int) fileNameTextArea.getPreferredSize().getHeight()));
 
         JButton fileSelectBtn1 = new JButton("Browse");
+        fileSelectBtn1.setToolTipText("Browse for input batch file name.");
         fileSelectBtn1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -58,15 +74,17 @@ public class MainUI implements Runnable {
         });
 
         JPanel panel1 = new JPanel();
-        panel1.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+        panel1.setBorder(BorderFactory.createEmptyBorder(0, 14, 0, 0));
         panel1.add(new JLabel("Batch File"));
         panel1.add(fileNameTextArea);
         panel1.add(fileSelectBtn1);
 
         JTextArea outputTextArea = new JTextArea();
-        outputTextArea.setPreferredSize(new Dimension(300, (int) outputTextArea.getPreferredSize().getHeight()));
+        outputTextArea.setToolTipText("Output executable file name.");
+        outputTextArea.setPreferredSize(new Dimension(290, (int) outputTextArea.getPreferredSize().getHeight()));
 
         JButton fileSelectBtn2 = new JButton("Browse");
+        fileSelectBtn2.setToolTipText("Browse for output executable file name.");
         fileSelectBtn2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -85,14 +103,17 @@ public class MainUI implements Runnable {
 
         JPanel panel2 = new JPanel();
         panel2.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        panel2.setBorder(BorderFactory.createEmptyBorder(0, 9, 0, 0));
         panel2.add(new JLabel("Output File"));
         panel2.add(outputTextArea);
         panel2.add(fileSelectBtn2);
 
         JTextArea iconTextArea = new JTextArea();
-        iconTextArea.setPreferredSize(new Dimension(300, (int) iconTextArea.getPreferredSize().getHeight()));
+        iconTextArea.setToolTipText("Input icon file name of the executable file output.");
+        iconTextArea.setPreferredSize(new Dimension(290, (int) iconTextArea.getPreferredSize().getHeight()));
 
         JButton fileSelectBtn3 = new JButton("Browse");
+        fileSelectBtn3.setToolTipText("Browse for input icon file name of the executable file output.");
         fileSelectBtn3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -110,19 +131,103 @@ public class MainUI implements Runnable {
         });
 
         JPanel panel3 = new JPanel();
-        panel3.setBorder(BorderFactory.createEmptyBorder(0, 13, 0, 0));
+        panel3.setBorder(BorderFactory.createEmptyBorder(0, 22, 14, 0));
         panel3.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         panel3.add(new JLabel("Icon File"));
         panel3.add(iconTextArea);
         panel3.add(fileSelectBtn3);
 
+        JLabel text2Label = new JLabel("Runtime Properties");
+        text2Label.setFont(text1Label.getFont().deriveFont(Font.BOLD, text2Label.getFont().getSize() + 2));
+
+        JPanel text2 = new JPanel();
+        text2.setBorder(BorderFactory.createEmptyBorder(14, 0, 0, 0));
+        text2.add(text2Label);
+
+        JTextArea titleArea = new JTextArea();
+        titleArea.setToolTipText("Runtime title of the executable file output.");
+        titleArea.setPreferredSize(new Dimension(368, (int) titleArea.getPreferredSize().getHeight()));
+
+        JPanel panel4 = new JPanel();
+        panel4.setBorder(BorderFactory.createEmptyBorder(0, -4, 0, 0));
+        panel4.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        panel4.add(new JLabel("Runtime Title"));
+        panel4.add(titleArea);
+
+        JTextArea argsArea = new JTextArea();
+        argsArea.setToolTipText("Runtime arguments of the executable file output.");
+        argsArea.setPreferredSize(new Dimension(368, (int) titleArea.getPreferredSize().getHeight()));
+
+        JPanel panel5 = new JPanel();
+        panel5.setBorder(BorderFactory.createEmptyBorder(0, 9, 0, 0));
+        panel5.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        panel5.add(new JLabel("Arguments"));
+        panel5.add(argsArea);
+
+        JTextArea workingDirArea = new JTextArea();
+        workingDirArea.setToolTipText("Default working directory of the output executable file.");
+        workingDirArea.setPreferredSize(new Dimension(290, (int) iconTextArea.getPreferredSize().getHeight()));
+
+        JButton fileSelectBtn4 = new JButton("Browse");
+        fileSelectBtn4.setToolTipText("Browse for default working directory of the output executable file.");
+        fileSelectBtn4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setAcceptAllFileFilterUsed(false);
+                fileChooser.setApproveButtonMnemonic('O');
+                fileChooser.setControlButtonsAreShown(true);
+                fileChooser.setDialogTitle("Default Working Directory");
+                fileChooser.setDragEnabled(true);
+
+                if(fileChooser.showOpenDialog(MainUI.this.mainFrame) == JFileChooser.APPROVE_OPTION)
+                    workingDirArea.setText(fileChooser.getSelectedFile().toString());
+            }
+        });
+
+        JPanel panel6 = new JPanel();
+        panel6.setBorder(BorderFactory.createEmptyBorder(0, 4, 14, 0));
+        panel6.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        panel6.add(new JLabel("Working Dir"));
+        panel6.add(workingDirArea);
+        panel6.add(fileSelectBtn4);
+
+        JButton btnSaveConfig = new JButton("Save Config");
+        btnSaveConfig.setToolTipText("Save project configuration.");
+
+        JButton btnOpenConfig = new JButton("Open Config");
+        btnOpenConfig.setToolTipText("Open project configuration.");
+
+        JPanel dummyPanel = new JPanel();
+        dummyPanel.setBorder(BorderFactory.createEmptyBorder(0, 150, 0, 0));
+
+        JButton btnConvert = new JButton("Convert");
+        btnConvert.setToolTipText("Convert to executable file.");
+
+        JPanel panel7 = new JPanel();
+        panel7.setBorder(BorderFactory.createEmptyBorder(14, 14, 0, 0));
+        panel7.add(btnSaveConfig);
+        panel7.add(btnOpenConfig);
+        panel7.add(dummyPanel);
+        panel7.add(btnConvert);
+
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
         mainPanel.add(panel0);
+        mainPanel.add(text0);
+        mainPanel.add(new JSeparator());
+        mainPanel.add(text1);
         mainPanel.add(panel1);
         mainPanel.add(panel2);
         mainPanel.add(panel3);
+        mainPanel.add(new JSeparator());
+        mainPanel.add(text2);
+        mainPanel.add(panel4);
+        mainPanel.add(panel5);
+        mainPanel.add(panel6);
+        mainPanel.add(new JSeparator());
+        mainPanel.add(panel7);
 
         JMenuItem fileExit = new JMenuItem("Exit");
         fileExit.addActionListener(new ActionListener() {
@@ -149,11 +254,27 @@ public class MainUI implements Runnable {
             }
         });
 
+        JMenuItem aboutGithub = new JMenuItem("GitHub");
+        aboutGithub.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI("https://github.com/nthnn/batch2exe"));
+                }
+                catch(URISyntaxException ex) { }
+                catch(IOException ex) {
+                    JOptionPane.showMessageDialog(MainUI.this.mainFrame, "Cannot find system's default internet browser.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         fileMenu.addSeparator();
         fileMenu.add(fileExit);
 
-        aboutMenu.add(aboutDevelopers);
         aboutMenu.add(aboutBatch2Exe);
+        aboutMenu.add(aboutDevelopers);
+        aboutMenu.addSeparator();
+        aboutMenu.add(aboutGithub);
 
         this.mainFrame.getContentPane().add(mainPanel);
         this.mainFrame.pack();
