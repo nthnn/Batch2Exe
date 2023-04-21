@@ -2,6 +2,9 @@ package xyz.nthnn.batch2exe;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.IntelliJTheme;
+import org.json.simple.parser.ParseException;
+import xyz.nthnn.batch2exe.core.ProjectInfo;
+import xyz.nthnn.batch2exe.io.ConfigIO;
 import xyz.nthnn.batch2exe.io.ResourceLoader;
 
 import javax.swing.*;
@@ -15,6 +18,7 @@ import java.net.URISyntaxException;
 
 public class MainUI implements Runnable {
     private JFrame mainFrame;
+    private static boolean isSaved = false;
 
     static {
         IntelliJTheme.ThemeLaf.setup(new FlatDarkLaf());
@@ -174,6 +178,7 @@ public class MainUI implements Runnable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 fileChooser.setAcceptAllFileFilterUsed(false);
                 fileChooser.setApproveButtonMnemonic('O');
                 fileChooser.setControlButtonsAreShown(true);
@@ -192,11 +197,77 @@ public class MainUI implements Runnable {
         panel6.add(workingDirArea);
         panel6.add(fileSelectBtn4);
 
+        Runnable saveConfig = new Runnable() {
+            @Override
+            public void run() {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileFilter(new FileNameExtensionFilter("JSON Files", "json"));
+                fileChooser.setAcceptAllFileFilterUsed(false);
+                fileChooser.setControlButtonsAreShown(true);
+                fileChooser.setDialogTitle("Output config JSON file");
+                fileChooser.setDragEnabled(true);
+
+                if(fileChooser.showOpenDialog(MainUI.this.mainFrame) == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        ConfigIO.save(fileChooser.getSelectedFile().toString(), ProjectInfo.initInfo(titleArea.getText(), fileNameTextArea.getText(), outputTextArea.getText(), iconTextArea.getText(), workingDirArea.getText(), argsArea.getText()));
+                        MainUI.isSaved = true;
+                    }
+                    catch (IOException ex) {
+                        JOptionPane.showMessageDialog(mainFrame, "Something went wrong while trying to save the configuration.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        };
+
+        Runnable openConfig = new Runnable() {
+            @Override
+            public void run() {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileFilter(new FileNameExtensionFilter("JSON Files", "json"));
+                fileChooser.setAcceptAllFileFilterUsed(false);
+                fileChooser.setControlButtonsAreShown(true);
+                fileChooser.setDialogTitle("Input config JSON file");
+                fileChooser.setDragEnabled(true);
+
+                if(fileChooser.showOpenDialog(MainUI.this.mainFrame) == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        ProjectInfo inf = ConfigIO.load(fileChooser.getSelectedFile().toString());
+                        fileNameTextArea.setText(inf.fileName);
+                        outputTextArea.setText(inf.output);
+                        iconTextArea.setText(inf.icon);
+                        titleArea.setText(inf.title);
+                        argsArea.setText(inf.arguments);
+                        workingDirArea.setText(inf.workingDirectory);
+
+                        MainUI.isSaved = true;
+                    }
+                    catch(IOException ex) {
+                        JOptionPane.showMessageDialog(mainFrame, "Something went wrong while trying to open the configuration file.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    catch(ParseException ex) {
+                        JOptionPane.showMessageDialog(mainFrame, "Invalid configuration file.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        };
+
         JButton btnSaveConfig = new JButton("Save Config");
         btnSaveConfig.setToolTipText("Save project configuration.");
+        btnSaveConfig.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveConfig.run();
+            }
+        });
 
         JButton btnOpenConfig = new JButton("Open Config");
         btnOpenConfig.setToolTipText("Open project configuration.");
+        btnOpenConfig.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openConfig.run();
+            }
+        });
 
         JPanel dummyPanel = new JPanel();
         dummyPanel.setBorder(BorderFactory.createEmptyBorder(0, 150, 0, 0));
@@ -228,6 +299,47 @@ public class MainUI implements Runnable {
         mainPanel.add(panel6);
         mainPanel.add(new JSeparator());
         mainPanel.add(panel7);
+
+        JMenuItem fileOpenConfig = new JMenuItem("Open");
+        fileOpenConfig.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openConfig.run();
+            }
+        });
+
+        JMenuItem fileSaveConfig = new JMenuItem("Save");
+        fileSaveConfig.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveConfig.run();
+            }
+        });
+
+        JMenuItem fileClose = new JMenuItem("Close");
+        fileClose.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!fileNameTextArea.getText().equals("")
+                        || !outputTextArea.getText().equals("")
+                        || !iconTextArea.getText().equals("")
+                        || !titleArea.getText().equals("")
+                        || !argsArea.getText().equals("")
+                        || !workingDirArea.getText().equals("")) {
+                    if(MainUI.isSaved || JOptionPane.showConfirmDialog(mainFrame, "Are you sure you want to exit? Changes cannot be saved anymore.", "Confirm", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+                        fileNameTextArea.setText("");
+                        outputTextArea.setText("");
+                        iconTextArea.setText("");
+                        titleArea.setText("");
+                        argsArea.setText("");
+                        workingDirArea.setText("");
+
+                        MainUI.isSaved = false;
+                    }
+                    else JOptionPane.showMessageDialog(mainFrame, "Configurations cannot be closed.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         JMenuItem fileExit = new JMenuItem("Exit");
         fileExit.addActionListener(new ActionListener() {
@@ -268,6 +380,9 @@ public class MainUI implements Runnable {
             }
         });
 
+        fileMenu.add(fileOpenConfig);
+        fileMenu.add(fileSaveConfig);
+        fileMenu.add(fileClose);
         fileMenu.addSeparator();
         fileMenu.add(fileExit);
 
