@@ -17,9 +17,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.UUID;
 
 public class MainUI implements Runnable {
     private JFrame mainFrame;
@@ -312,7 +314,29 @@ public class MainUI implements Runnable {
         btnConvert.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(!new File(fileNameTextArea.getText()).exists())
+                    JOptionPane.showMessageDialog(mainFrame, "Input batch file not found!", "Error", JOptionPane.ERROR_MESSAGE);
 
+                if(new File(outputTextArea.getText()).exists())
+                    JOptionPane.showMessageDialog(mainFrame, "Output executable file already exists!", "Error", JOptionPane.ERROR_MESSAGE);
+
+                if(!new File(iconTextArea.getText()).exists())
+                    JOptionPane.showMessageDialog(mainFrame, "Input icon file not found!", "Error", JOptionPane.ERROR_MESSAGE);
+
+                String uuid = UUID.randomUUID().toString();
+                try {
+                    ConfigIO.save(uuid + ".json", ProjectInfo.initInfo(titleArea.getText(), fileNameTextArea.getText(), outputTextArea.getText(), iconTextArea.getText(), workingDirArea.getText(), argsArea.getText()));
+                    if(Runtime.getRuntime().exec("batch2exe-wrapper.exe -c " + uuid + ".json").waitFor() == 2)
+                        JOptionPane.showMessageDialog(mainFrame, "Successfully converted!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    else JOptionPane.showMessageDialog(mainFrame, "Something went wrong.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                catch(InterruptedException | IOException ex) {
+                    System.err.println(ex.getMessage());
+                    JOptionPane.showMessageDialog(mainFrame, "Something went wrong.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                finally {
+                    new File(uuid + ".json").delete();
+                }
             }
         });
 

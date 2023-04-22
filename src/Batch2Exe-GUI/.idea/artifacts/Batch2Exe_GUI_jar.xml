@@ -4,6 +4,7 @@
     <root id="archive" name="Batch2Exe-GUI.jar">
       <element id="module-output" name="Batch2Exe-GUI" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/flatlaf-3.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/json-simple-1.1.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
