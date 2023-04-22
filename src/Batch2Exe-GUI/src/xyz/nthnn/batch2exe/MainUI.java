@@ -2,13 +2,18 @@ package xyz.nthnn.batch2exe;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.IntelliJTheme;
+
 import org.json.simple.parser.ParseException;
+
 import xyz.nthnn.batch2exe.core.ProjectInfo;
 import xyz.nthnn.batch2exe.io.ConfigIO;
 import xyz.nthnn.batch2exe.io.ResourceLoader;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +31,22 @@ public class MainUI implements Runnable {
 
     @Override
     public void run() {
+        DocumentListener docListener = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                MainUI.isSaved = false;
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                MainUI.isSaved = false;
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                MainUI.isSaved = false;
+            }
+        };
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
         JMenu aboutMenu = new JMenu("About");
@@ -58,6 +79,7 @@ public class MainUI implements Runnable {
         JTextArea fileNameTextArea = new JTextArea();
         fileNameTextArea.setToolTipText("Input batch file name.");
         fileNameTextArea.setPreferredSize(new Dimension(290, (int) fileNameTextArea.getPreferredSize().getHeight()));
+        fileNameTextArea.getDocument().addDocumentListener(docListener);
 
         JButton fileSelectBtn1 = new JButton("Browse");
         fileSelectBtn1.setToolTipText("Browse for input batch file name.");
@@ -72,8 +94,10 @@ public class MainUI implements Runnable {
                 fileChooser.setDialogTitle("Select batch file to be converted");
                 fileChooser.setDragEnabled(true);
 
-                if(fileChooser.showOpenDialog(MainUI.this.mainFrame) == JFileChooser.APPROVE_OPTION)
+                if(fileChooser.showOpenDialog(MainUI.this.mainFrame) == JFileChooser.APPROVE_OPTION) {
                     fileNameTextArea.setText(fileChooser.getSelectedFile().toString());
+                    MainUI.isSaved = false;
+                }
             }
         });
 
@@ -86,6 +110,7 @@ public class MainUI implements Runnable {
         JTextArea outputTextArea = new JTextArea();
         outputTextArea.setToolTipText("Output executable file name.");
         outputTextArea.setPreferredSize(new Dimension(290, (int) outputTextArea.getPreferredSize().getHeight()));
+        outputTextArea.getDocument().addDocumentListener(docListener);
 
         JButton fileSelectBtn2 = new JButton("Browse");
         fileSelectBtn2.setToolTipText("Browse for output executable file name.");
@@ -100,8 +125,10 @@ public class MainUI implements Runnable {
                 fileChooser.setDialogTitle("Output file name");
                 fileChooser.setDragEnabled(true);
 
-                if(fileChooser.showOpenDialog(MainUI.this.mainFrame) == JFileChooser.APPROVE_OPTION)
+                if(fileChooser.showOpenDialog(MainUI.this.mainFrame) == JFileChooser.APPROVE_OPTION) {
                     outputTextArea.setText(fileChooser.getSelectedFile().toString());
+                    MainUI.isSaved = false;
+                }
             }
         });
 
@@ -115,6 +142,7 @@ public class MainUI implements Runnable {
         JTextArea iconTextArea = new JTextArea();
         iconTextArea.setToolTipText("Input icon file name of the executable file output.");
         iconTextArea.setPreferredSize(new Dimension(290, (int) iconTextArea.getPreferredSize().getHeight()));
+        iconTextArea.getDocument().addDocumentListener(docListener);
 
         JButton fileSelectBtn3 = new JButton("Browse");
         fileSelectBtn3.setToolTipText("Browse for input icon file name of the executable file output.");
@@ -129,8 +157,10 @@ public class MainUI implements Runnable {
                 fileChooser.setDialogTitle("Output icon file name");
                 fileChooser.setDragEnabled(true);
 
-                if(fileChooser.showOpenDialog(MainUI.this.mainFrame) == JFileChooser.APPROVE_OPTION)
+                if(fileChooser.showOpenDialog(MainUI.this.mainFrame) == JFileChooser.APPROVE_OPTION) {
                     iconTextArea.setText(fileChooser.getSelectedFile().toString());
+                    MainUI.isSaved = false;
+                }
             }
         });
 
@@ -151,6 +181,7 @@ public class MainUI implements Runnable {
         JTextArea titleArea = new JTextArea();
         titleArea.setToolTipText("Runtime title of the executable file output.");
         titleArea.setPreferredSize(new Dimension(368, (int) titleArea.getPreferredSize().getHeight()));
+        titleArea.getDocument().addDocumentListener(docListener);
 
         JPanel panel4 = new JPanel();
         panel4.setBorder(BorderFactory.createEmptyBorder(0, -4, 0, 0));
@@ -161,6 +192,7 @@ public class MainUI implements Runnable {
         JTextArea argsArea = new JTextArea();
         argsArea.setToolTipText("Runtime arguments of the executable file output.");
         argsArea.setPreferredSize(new Dimension(368, (int) titleArea.getPreferredSize().getHeight()));
+        argsArea.getDocument().addDocumentListener(docListener);
 
         JPanel panel5 = new JPanel();
         panel5.setBorder(BorderFactory.createEmptyBorder(0, 9, 0, 0));
@@ -171,6 +203,7 @@ public class MainUI implements Runnable {
         JTextArea workingDirArea = new JTextArea();
         workingDirArea.setToolTipText("Default working directory of the output executable file.");
         workingDirArea.setPreferredSize(new Dimension(290, (int) iconTextArea.getPreferredSize().getHeight()));
+        workingDirArea.getDocument().addDocumentListener(docListener);
 
         JButton fileSelectBtn4 = new JButton("Browse");
         fileSelectBtn4.setToolTipText("Browse for default working directory of the output executable file.");
@@ -185,8 +218,10 @@ public class MainUI implements Runnable {
                 fileChooser.setDialogTitle("Default Working Directory");
                 fileChooser.setDragEnabled(true);
 
-                if(fileChooser.showOpenDialog(MainUI.this.mainFrame) == JFileChooser.APPROVE_OPTION)
+                if(fileChooser.showOpenDialog(MainUI.this.mainFrame) == JFileChooser.APPROVE_OPTION) {
                     workingDirArea.setText(fileChooser.getSelectedFile().toString());
+                    MainUI.isSaved = false;
+                }
             }
         });
 
@@ -274,6 +309,12 @@ public class MainUI implements Runnable {
 
         JButton btnConvert = new JButton("Convert");
         btnConvert.setToolTipText("Convert to executable file.");
+        btnConvert.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JPanel panel7 = new JPanel();
         panel7.setBorder(BorderFactory.createEmptyBorder(14, 14, 0, 0));
