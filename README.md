@@ -17,6 +17,10 @@ Batch2Exe is a program for converting batch files to executable files on Windows
 - [Batch2Exe-Launcher](./src/Batch2Exe-Launcher): MingW GCC
 - [Batch2Exe-MSI](./src/Batch2Exe-MSI): WiX Toolset
 
+## Build
+
+Compile and build both [Batch2Exe-GUI](./src/Batch2Exe-GUI) and [Batch2Exe-Wrapper](./src/Batch2Exe-Wrapper), with their respective IDEs. Then run the [build.bat](./build/build.bat)
+
 ## Developers
 
 Leader:
