@@ -6,6 +6,17 @@
 
 Batch2Exe is a program for converting batch files to executable files on Windows. It has a user-friendly interface for inputting information and uses advanced compression and obfuscation techniques for security. This paper describes its technical aspects and features, making it a valuable tool for system administrators and developers.
 
+<p align="center">
+	<img src="./docs/screenshot.png" width="500" />
+</p>
+
+## Requirements
+
+- [Batch2Exe-GUI](./src/Batch2Exe-GUI): JDK 20, IntelliJ IDE
+- [Batch2Exe-Wrapper](./src/Batch2Exe-Wrapper): .NET Framework 6.0, Visual Studio IDE
+- [Batch2Exe-Launcher](./src/Batch2Exe-Launcher): MingW GCC
+- [Batch2Exe-MSI](./src/Batch2Exe-MSI): WiX Toolset
+
 ## Developers
 
 Leader:
