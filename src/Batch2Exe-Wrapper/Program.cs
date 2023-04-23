@@ -43,7 +43,7 @@ namespace Batch2ExeWrapper {
             if(Proj.Title == null)
                 Proj.Title = new FileInfo(Proj.FileName ?? "").Name.Replace(".bat", "");
 
-            if(Proj.Icon != null && !File.Exists(Proj.Icon)) {
+            if(Proj.Icon != null && Proj.Icon != "" && !File.Exists(Proj.Icon)) {
                 Console.WriteLine("Icon file doesn't exist: " + Proj.Icon);
                 Environment.Exit(0);
             }
@@ -56,7 +56,7 @@ namespace Batch2ExeWrapper {
                 Proj.Output = Proj.FileName?.Substring(0, Proj.FileName.Length - 3) + "exe";
 
             string cscArgs = "/target:winexe /debug- /optimize+ /out:" + Proj.Output + " ";
-            if(Proj.Icon != null)
+            if(Proj.Icon != null && Proj.Icon != "")
                 cscArgs += "/win32icon:" + Proj.Icon + " ";
 
             string template = Template.Wrapper;

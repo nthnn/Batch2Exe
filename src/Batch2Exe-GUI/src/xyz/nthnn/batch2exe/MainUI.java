@@ -320,9 +320,6 @@ public class MainUI implements Runnable {
                 if(new File(outputTextArea.getText()).exists())
                     JOptionPane.showMessageDialog(mainFrame, "Output executable file already exists!", "Error", JOptionPane.ERROR_MESSAGE);
 
-                if(!new File(iconTextArea.getText()).exists())
-                    JOptionPane.showMessageDialog(mainFrame, "Input icon file not found!", "Error", JOptionPane.ERROR_MESSAGE);
-
                 String uuid = UUID.randomUUID().toString();
                 try {
                     ConfigIO.save(uuid + ".json", ProjectInfo.initInfo(titleArea.getText(), fileNameTextArea.getText(), outputTextArea.getText(), iconTextArea.getText(), workingDirArea.getText(), argsArea.getText()));
