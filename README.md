@@ -19,7 +19,11 @@ Batch2Exe is a program for converting batch files to executable files on Windows
 
 ## Build
 
-Compile and build both [Batch2Exe-GUI](./src/Batch2Exe-GUI) and [Batch2Exe-Wrapper](./src/Batch2Exe-Wrapper), with their respective IDEs. Then run the [build.bat](./build/build.bat)
+Compile and build both [Batch2Exe-GUI](./src/Batch2Exe-GUI) and [Batch2Exe-Wrapper](./src/Batch2Exe-Wrapper), with their respective IDEs. Then run the [build.bat](./build/build.bat). If no error has been encountered, there will be a generated Microsoft installer on [dest](dest).
+
+## Warning
+
+After the MSI installation, on some systems it is required for the desktop shortcut (or even the application itself) to be ran as administrator.
 
 ## Developers
 
